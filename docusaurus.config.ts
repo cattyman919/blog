@@ -122,10 +122,7 @@ const config: Config = {
               label: "Documentation",
               to: "/docs",
             },
-            {
-              label: "Projects",
-              to: "/projects",
-            },
+
             {
               label: "Resume",
               href: "https://seno-portfolio.s3.ap-southeast-1.amazonaws.com/Seno+Pamungkas+Rahman+-+CV.pdf",
