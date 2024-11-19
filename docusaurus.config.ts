@@ -2,13 +2,11 @@ import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const config: Config = {
-  title: "Seno Pamungkas Rahman",
+  title: "DevSen",
   tagline:
     "I am a Full-Stack Developer passionate about solving meaningful problems.",
-  favicon: "img/favicon.ico",
+  favicon: "img/logo_seno.ico",
 
   // Set the production url of your site here
   url: "https://your-docusaurus-site.example.com",
@@ -23,6 +21,9 @@ const config: Config = {
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
+  markdown: {
+    format: "mdx",
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -38,21 +39,13 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
         blog: {
-          showReadingTime: true,
+          showReadingTime: false,
           feedOptions: {
             type: ["rss", "atom"],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
           // Useful options to enforce blogging best practices
           onInlineTags: "warn",
           onInlineAuthors: "warn",
@@ -74,6 +67,13 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: false,
     },
+
+    blog: {
+      sidebar: {
+        groupByYear: true,
+      },
+    },
+
     navbar: {
       hideOnScroll: true,
       title: "DevSen",
@@ -98,20 +98,16 @@ const config: Config = {
           title: "Contacts",
           items: [
             {
-              html: `
-                  <div style="display: flex; gap: 16px; align-items: center;">
-                    <a href="https://github.com/cattyman919" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
-                      <img src="img/github.svg" alt="Deploys by Netlify" width="24" height="24" />
-                    </a>
-                    <a href="https://www.linkedin.com/in/seno-pamungkas-rahman-714341192" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
-                      <img src="img/linkedin.svg" alt="Deploys by Netlify" width="24" height="24" />
-                    </a>
-                    <a href="https://www.instagram.com/senohebat/" target="_blank" rel="noreferrer noopener" aria-label="Deploys by Netlify">
-                      <img src="img/instagram.svg" alt="Deploys by Netlify" width="24" height="24" />
-                    </a>
-                    
-                  </div>
-                `,
+              html: `<a class="footer__icon-link fa-brands fa-github fa-xl" href="https://github.com/cattyman919" target="_blank" rel="noreferrer noopener"></a>`,
+            },
+            {
+              html: `<a class="footer__icon-link fa-brands fa-linkedin fa-xl" href="https://www.linkedin.com/in/seno-pamungkas-rahman-714341192" target="_blank" rel="noreferrer noopener"></a>`,
+            },
+            {
+              html: `<a class="footer__icon-link fa-brands fa-instagram fa-xl" href="https://www.instagram.com/senohebat/" target="_blank" rel="noreferrer noopener"></a>`,
+            },
+            {
+              html: `<a class="footer__icon-link fa-regular fa-envelope fa-xl" href="mailto:senopamungkasraehman@gmail.com" target="_blank" rel="noreferrer noopener"></a>`,
             },
           ],
         },

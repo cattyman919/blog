@@ -36,7 +36,7 @@ function HomepageHeader() {
         <p style={{ fontSize: "1.5rem", marginBottom: "0", marginTop: "1rem" }}>
           Hi, my name is
         </p>
-        <h1 className="hero__title text--primary ">{siteConfig.title}</h1>
+        <h1 className="hero__title text--primary ">Seno Pamungkas Rahman</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div
           className={styles.buttons}
@@ -63,10 +63,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
-    >
+    <Layout title={`DevSen Blog`} description="Seno's Blog">
       <HomepageHeader />
     </Layout>
   );
