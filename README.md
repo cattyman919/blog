@@ -1,6 +1,6 @@
 # Website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Blog and Document website Seno created using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ### Installation
 
