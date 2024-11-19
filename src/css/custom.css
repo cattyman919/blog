@@ -48,6 +48,10 @@ html[data-theme="dark"] .footer--dark {
   --ifm-footer-background-color: #131d21;
 }
 
+article h1 {
+  color: var(--ifm-color-primary);
+}
+
 .hero {
   background-color: var(--ifm-background-color);
 }
