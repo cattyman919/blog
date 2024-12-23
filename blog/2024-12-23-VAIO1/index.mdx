@@ -223,17 +223,20 @@ Cons :
 - WIFI : This is a TCP connection which means it has connect first and do handshake everytime. **We wanted a fast data transfer and not keep reconnecting everytime which means we needed a UDP protocol for connectionless data transfer.** 
 
 
+![image](assets/p15.png)
+
 This seems all hope is lost... There seems to be no solution for our project unless we buy another NRF module that is compatible with ESP32.
 
 But wait... There is hope.... The saviour... The boy savior... (a reference to [Arcane](https://www.imdb.com/title/tt11126994/) btw)
 
 Introducing [ESP-NOW](https://www.espressif.com/en/solutions/low-power-solutions/esp-now), a wireless connectionless protocol that uses the WIFI hardware but uses a custom protocol made by Expressif themself. 
 
-![image](assets/p15.png)
+
+![image](assets/p16.png)
 
 It is fast, low power usage, have a long range (up to 100m). This protocol doesn't use the standard OSI model for network, instead it uses a custom ESP-NOW model. It reduces 5 layer OSI model into just one layer, this causes to have quick response in data transfer.
 
-![image](assets/p16.png)
+![image](assets/p17.png)
 
 This wireless communication protocol is the best solution for our problem. ESP-NOW has these characteristic which is why it fits our solution : 
 - It is connectionless which means we don't need to do a TCP handshake. (ESP-NOW acts like a UDP but still different)
