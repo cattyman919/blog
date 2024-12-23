@@ -81,3 +81,11 @@ body {
 footer.docusaurus-mt-lg {
   margin-top: 1.75rem;
 }
+
+p:has(img) {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
