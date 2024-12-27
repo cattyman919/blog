@@ -23,7 +23,7 @@ var config_default = defineConfig({
       {
         name: "post",
         label: "Posts",
-        path: "content/posts",
+        path: "blog",
         format: "mdx",
         fields: [
           {
@@ -34,9 +34,20 @@ var config_default = defineConfig({
             required: true
           },
           {
-            label: "Tags",
-            name: "tags",
+            type: "datetime",
+            name: "date",
+            label: "Date",
+            required: true
+          },
+          {
+            type: "boolean",
+            name: "hide_table_of_contents",
+            label: "Hide table of contents?"
+          },
+          {
             type: "string",
+            name: "tags",
+            label: "Tags",
             list: true
           },
           {

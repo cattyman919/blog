@@ -186,6 +186,8 @@ export type DocumentNode = Post | Doc | Folder;
 export type Post = Node & Document & {
   __typename?: 'Post';
   title: Scalars['String']['output'];
+  date: Scalars['String']['output'];
+  hide_table_of_contents?: Maybe<Scalars['Boolean']['output']>;
   tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   body?: Maybe<Scalars['JSON']['output']>;
   id: Scalars['ID']['output'];
@@ -200,6 +202,19 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type DatetimeFilter = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type BooleanFilter = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type RichTextFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
@@ -208,6 +223,8 @@ export type RichTextFilter = {
 
 export type PostFilter = {
   title?: InputMaybe<StringFilter>;
+  date?: InputMaybe<DatetimeFilter>;
+  hide_table_of_contents?: InputMaybe<BooleanFilter>;
   tags?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
 };
@@ -339,6 +356,8 @@ export type DocumentMutation = {
 
 export type PostMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['String']['input']>;
+  hide_table_of_contents?: InputMaybe<Scalars['Boolean']['input']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
@@ -350,7 +369,7 @@ export type DocMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type PostPartsFragment = { __typename: 'Post', title: string, tags?: Array<string | null> | null, body?: any | null };
+export type PostPartsFragment = { __typename: 'Post', title: string, date: string, hide_table_of_contents?: boolean | null, tags?: Array<string | null> | null, body?: any | null };
 
 export type DocPartsFragment = { __typename: 'Doc', title: string, description?: string | null, tags?: Array<string | null> | null, body?: any | null };
 
@@ -359,7 +378,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename: 'Post', id: string, title: string, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type PostQuery = { __typename?: 'Query', post: { __typename: 'Post', id: string, title: string, date: string, hide_table_of_contents?: boolean | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type PostConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -371,7 +390,7 @@ export type PostConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename: 'Post', id: string, title: string, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename: 'Post', id: string, title: string, date: string, hide_table_of_contents?: boolean | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type DocQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -396,6 +415,8 @@ export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   __typename
   title
+  date
+  hide_table_of_contents
   tags
   body
 }

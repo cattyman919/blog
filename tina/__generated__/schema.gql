@@ -92,6 +92,8 @@ union DocumentNode = Post | Doc | Folder
 
 type Post implements Node & Document {
   title: String!
+  date: String!
+  hide_table_of_contents: Boolean
   tags: [String]
   body: JSON
   id: ID!
@@ -106,6 +108,19 @@ input StringFilter {
   in: [String]
 }
 
+input DatetimeFilter {
+  after: String
+  before: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
+}
+
 input RichTextFilter {
   startsWith: String
   eq: String
@@ -114,6 +129,8 @@ input RichTextFilter {
 
 input PostFilter {
   title: StringFilter
+  date: DatetimeFilter
+  hide_table_of_contents: BooleanFilter
   tags: StringFilter
   body: RichTextFilter
 }
@@ -182,6 +199,8 @@ input DocumentMutation {
 
 input PostMutation {
   title: String
+  date: String
+  hide_table_of_contents: Boolean
   tags: [String]
   body: JSON
 }
