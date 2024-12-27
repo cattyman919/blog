@@ -1,5 +1,6 @@
 ---
 title: Making a roomba robot 😊 (VAIO 1/3)
+date: 2024-12-23
 description: Making roomba tobot
 hide_table_of_contents: false
 ---
@@ -9,11 +10,11 @@ Do you ever have a roomba that's just keeps crashing into the corner of your roo
 
 What if we can control the roomba manually? Like if it get stuck, at least we can control remotely to get unstuck. Like what if we used some kind of a controller for the roomba? But also the roomba can still work automatically.
 
-![image](assets/p1.png)
+![image](/img/p2/p2_1.png)
 
 Well that's what me and my team are trying to build for our college project. A simple roomba that can be controlled manually and automatically. We decided that the roomba can be controlled with a PS4 controller. But why stop there? We can have different kind of controllers too right? That's why we also added a hand-gesture controller that is using a gyroscope to control the roomba.
 
-![image](assets/p2.png)
+![image](/img/p2/p2_2.png)
 
 {/* truncate */}
 
@@ -21,7 +22,7 @@ So if we have a roomba that can run automatically and controlled manually using 
 
 It's like if we say "controller", the roomba will change it state to be controlled with a PS4 controller. If we say "hand", the state will change into hand-gesture controller. Finally if we say "auto" the roomba will change it's state to be automatic.
 
-![image](assets/p3.png)
+![image](/img/p2/p2_3.png)
 
 So here are all the list of features for our custom roomba :
 - Can still be run automatically
@@ -30,11 +31,11 @@ So here are all the list of features for our custom roomba :
 - State management using voice commands
 - Vacuum for collecting dusts & trash ( This turns out to be a massive problem :3 )
 
-![image](assets/p4.png)
+![image](/img/p2/p2_4.png)
 
 Before we start building this robot, We need a name for the project which we decided to call it Vacuum All-in-One (VAIO) and also i have to give massive credit to my team for helping me build this cool little project for college. Here are the team members :
 
-![image](assets/p5.png)
+![image](/img/p2/p2_5.png)
 
 ## What tools do we need?
 
@@ -64,11 +65,11 @@ Now we need to choose exactly what tools we want. For the microcontroller, we pi
 
 This all seems complicated even for us, so we made a simple visualization for better understanding
 
-![image](assets/p6.png)
+![image](/img/p2/p2_6.png)
 
 This simple concept laid the foundation for our VAIO robot. Now let's get into the nitty gritty with coding, wiring, and start build this thing!
 
-![image](assets/p7.gif)
+![image](/img/p2/p2_7.gif)
 
 ## Code Logic
 Now we got the tools we needed, now lets talk about the logic  & code for the 2 microcontrollers. The ESP32 that is attached to the VAIO Robot is called "VAIO Code" and the other one that is attached to the MPU6050 is called "Glove Code".
@@ -86,7 +87,7 @@ Glove Code:
 
 Since this is a very large and complex project, we decided to use [PlatformIO](https://platformio.org/https://platformio.org/) to manage all our source code and libraries.  Only using Arduino IDE for managing code and libraries of this complex project can be a pain to the ass. This will turns out to be very collaborative and modular for us to use which in turns we can easily integrate each other codes without a hassle. We also use [FreeRTOS](https://www.freertos.org/) to manage tasks and utilize two cores that ESP32 have, so we can fully utilize the maximum capability of an ESP32. 
 
-![image](assets/p8.png)
+![image](/img/p2/p2_8.png)
 
 Now that we have the blueprint to start building this, well we can start building it. Each of us are given tasks to focus on building the VAIO
 - **Seno (me)** : Building the Glove & Hand Gesture logic using MPU6050 module & NRF communication
@@ -100,8 +101,8 @@ Since i have been given the task on the Hand Gesture Logic (i.e. Glove Code), le
 ### MPU6050 (Gyroscope Module)
 MPU6050 module uses a [I2C communication protocols](https://www.circuitbasics.com/basics-of-the-i2c-communication-protocol/) which means we are using the SDA & SCL pins that we need to connect to the default pin for I2C communication in ESP32. According to the [ESP32 pinout reference](https://randomnerdtutorials.com/esp32-pinout-reference-gpios/), the default pin for SDA is GPIO21 and SCL is GPIO22 for the I2C communication protocol in ESP32. So our cables & pins should look something like this 
 
-![image](assets/p9.png)
-![image](assets/p10.png)
+![image](/img/p2/p2_9.png)
+![image](/img/p2/p2_10.png)
 
 Finally let's get into coding this module. I will be using a libraries such as 'I2Cdev' and 'MPU6050_6Axis_MotionApps20' to handle the complex logic for the I2C communication so we can just grab the necessary data easy and fast. 
 
@@ -197,19 +198,19 @@ This is essentially the code to get the MPU6050 data, we now should get the x an
 ### The NRF Module does not work 😐
 After getting the MPU6050 data, the next goal is to send the data to the other ESP32 using NRF module. **But there is a problem...**
 
-![image](assets/p11.png)
+![image](/img/p2/p2_11.png)
 
 The NRF module that we bought is **not compatible with our ESP32** which means they can't communicate with each other 🥲. This NRF module only works with arduino boards. I should have thought about compability before buying this hardware and not just assume it will just work on any boards 😖.
 
-![image](assets/p12.png)
+![image](/img/p2/p2_12.png)
 
 This is really problematic. How can we send the hand-gesture data (i.e. MPU6050) to the ESP32 on the VAIO robot now? We might need to buy different NRF hardware just to make it work. I really don't want to waste anymore money and buying another hardware hoping it will work. This makes me sad bro 😭
 
-![image](assets/p13.gif)
+![image](/img/p2/p2_13.gif)
 
 But as an computer engineer student, we can't just give up. It's just not in our DNA. We must find a solution, **we must find another way**.
 
-![image](assets/p14.jpg)
+![image](/img/p2/p2_14.jpg)
 
 ### ESP-NOW - The Boy Savior
 To solve this problem, we needed to find an alternative solution for our wireless communication protocol. This can be in the form of bluetooth, WIFI, or NRF (which didn't worked). So our only choice is either bluetooth or WIFI, let's get the pros and cons of each solution for our VAIO project.
@@ -223,7 +224,7 @@ Cons :
 - WIFI : This is a TCP connection which means it has connect first and do handshake everytime. **We wanted a fast data transfer and not keep reconnecting everytime which means we needed a UDP protocol for connectionless data transfer.** 
 
 
-![image](assets/p15.png)
+![image](/img/p2/p2_15.png)
 
 This seems all hope is lost... There seems to be no solution for our project unless we buy another NRF module that is compatible with ESP32.
 
@@ -232,11 +233,11 @@ But wait... There is hope.... The saviour... The boy savior... (a reference to [
 Introducing [ESP-NOW](https://www.espressif.com/en/solutions/low-power-solutions/esp-now), a wireless connectionless protocol that uses the WIFI hardware but uses a custom protocol made by Expressif themself. 
 
 
-![image](assets/p16.png)
+![image](/img/p2/p2_16.png)
 
 It is fast, low power usage, have a long range (up to 100m). This protocol doesn't use the standard OSI model for network, instead it uses a custom ESP-NOW model. It reduces 5 layer OSI model into just one layer, this causes to have quick response in data transfer.
 
-![image](assets/p17.png)
+![image](/img/p2/p2_17.png)
 
 This wireless communication protocol is the best solution for our problem. ESP-NOW has these characteristic which is why it fits our solution : 
 - It is connectionless which means we don't need to do a TCP handshake. (ESP-NOW acts like a UDP but still different)
@@ -312,6 +313,6 @@ This callback function will be called everytime there is a data receive targeted
 
 Now it works, we can finally get the gyroscope data from other ESP32 using the ESP-NOW communication protocol
 
-![image](assets/p18.gif)
+![image](/img/p2/p2_18.gif)
 
 In the next part, we will explore more on how can we utilize PlatformIO to make this code more modular and apply OOP principles. We will also implement task using FreeRTOS as well.
