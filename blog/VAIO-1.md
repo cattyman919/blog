@@ -1,8 +1,6 @@
 ---
 title: Making a roomba robot 😊 (VAIO 1/3)
 date: 2024-12-23
-description: Making roomba tobot
-hide_table_of_contents: false
 ---
 ## A roomba robot 🤔 ???
 
@@ -16,7 +14,7 @@ Well that's what me and my team are trying to build for our college project. A s
 
 ![image](/img/p2/p2_2.png)
 
-{/* truncate */}
+<!-- truncate -->
 
 So if we have a roomba that can run automatically and controlled manually using PS4 and Hand-Gestures, how can we control the state of the roomba controllers? For example how can we change from PS4 Controller to Hand-Gestures Controller or from PS4 controller to Automatic? Well we decided a clever way to change the state, that is using a voice command :)
 

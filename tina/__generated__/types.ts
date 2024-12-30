@@ -82,6 +82,10 @@ export type Query = {
   collections: Array<Collection>;
   node: Node;
   document: DocumentNode;
+  user: User;
+  authenticate?: Maybe<UserUsers>;
+  authorize?: Maybe<UserUsers>;
+  userConnection: UserConnection;
   post: Post;
   postConnection: PostConnection;
   doc: Doc;
@@ -107,6 +111,27 @@ export type QueryNodeArgs = {
 export type QueryDocumentArgs = {
   collection?: InputMaybe<Scalars['String']['input']>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryUserArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryAuthenticateArgs = {
+  sub: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
+export type QueryUserConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<UserFilter>;
 };
 
 
@@ -140,6 +165,7 @@ export type QueryDocConnectionArgs = {
 };
 
 export type DocumentFilter = {
+  user?: InputMaybe<UserFilter>;
   post?: InputMaybe<PostFilter>;
   doc?: InputMaybe<DocFilter>;
 };
@@ -181,15 +207,25 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Post | Doc | Folder;
+export type DocumentNode = User | Post | Doc | Folder;
 
-export type Post = Node & Document & {
-  __typename?: 'Post';
-  title: Scalars['String']['output'];
-  date: Scalars['String']['output'];
-  hide_table_of_contents?: Maybe<Scalars['Boolean']['output']>;
-  tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  body?: Maybe<Scalars['JSON']['output']>;
+export type UserUsersPassword = {
+  __typename?: 'UserUsersPassword';
+  value: Scalars['String']['output'];
+  passwordChangeRequired?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type UserUsers = {
+  __typename?: 'UserUsers';
+  username: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  password: UserUsersPassword;
+};
+
+export type User = Node & Document & {
+  __typename?: 'User';
+  users?: Maybe<Array<Maybe<UserUsers>>>;
   id: Scalars['ID']['output'];
   _sys: SystemInfo;
   _values: Scalars['JSON']['output'];
@@ -202,17 +238,46 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type UserUsersFilter = {
+  username?: InputMaybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
+  email?: InputMaybe<StringFilter>;
+};
+
+export type UserFilter = {
+  users?: InputMaybe<UserUsersFilter>;
+};
+
+export type UserConnectionEdges = {
+  __typename?: 'UserConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<User>;
+};
+
+export type UserConnection = Connection & {
+  __typename?: 'UserConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<UserConnectionEdges>>>;
+};
+
+export type Post = Node & Document & {
+  __typename?: 'Post';
+  title: Scalars['String']['output'];
+  date: Scalars['String']['output'];
+  tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  body?: Maybe<Scalars['JSON']['output']>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
 export type DatetimeFilter = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   eq?: InputMaybe<Scalars['String']['input']>;
   exists?: InputMaybe<Scalars['Boolean']['input']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-export type BooleanFilter = {
-  eq?: InputMaybe<Scalars['Boolean']['input']>;
-  exists?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type RichTextFilter = {
@@ -224,7 +289,6 @@ export type RichTextFilter = {
 export type PostFilter = {
   title?: InputMaybe<StringFilter>;
   date?: InputMaybe<DatetimeFilter>;
-  hide_table_of_contents?: InputMaybe<BooleanFilter>;
   tags?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
 };
@@ -280,6 +344,9 @@ export type Mutation = {
   deleteDocument: DocumentNode;
   createDocument: DocumentNode;
   createFolder: DocumentNode;
+  updatePassword: Scalars['Boolean']['output'];
+  updateUser: User;
+  createUser: User;
   updatePost: Post;
   createPost: Post;
   updateDoc: Doc;
@@ -320,6 +387,23 @@ export type MutationCreateFolderArgs = {
 };
 
 
+export type MutationUpdatePasswordArgs = {
+  password: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  relativePath: Scalars['String']['input'];
+  params: UserMutation;
+};
+
+
+export type MutationCreateUserArgs = {
+  relativePath: Scalars['String']['input'];
+  params: UserMutation;
+};
+
+
 export type MutationUpdatePostArgs = {
   relativePath: Scalars['String']['input'];
   params: PostMutation;
@@ -344,20 +428,37 @@ export type MutationCreateDocArgs = {
 };
 
 export type DocumentUpdateMutation = {
+  user?: InputMaybe<UserMutation>;
   post?: InputMaybe<PostMutation>;
   doc?: InputMaybe<DocMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DocumentMutation = {
+  user?: InputMaybe<UserMutation>;
   post?: InputMaybe<PostMutation>;
   doc?: InputMaybe<DocMutation>;
+};
+
+export type UserUsersPasswordMutation = {
+  value?: InputMaybe<Scalars['String']['input']>;
+  passwordChangeRequired: Scalars['Boolean']['input'];
+};
+
+export type UserUsersMutation = {
+  username?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<UserUsersPasswordMutation>;
+};
+
+export type UserMutation = {
+  users?: InputMaybe<Array<InputMaybe<UserUsersMutation>>>;
 };
 
 export type PostMutation = {
   title?: InputMaybe<Scalars['String']['input']>;
   date?: InputMaybe<Scalars['String']['input']>;
-  hide_table_of_contents?: InputMaybe<Scalars['Boolean']['input']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
@@ -369,16 +470,37 @@ export type DocMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type PostPartsFragment = { __typename: 'Post', title: string, date: string, hide_table_of_contents?: boolean | null, tags?: Array<string | null> | null, body?: any | null };
+export type UserPartsFragment = { __typename: 'User', users?: Array<{ __typename: 'UserUsers', username: string, name?: string | null, email?: string | null, password: { __typename?: 'UserUsersPassword', value: string, passwordChangeRequired?: boolean | null } } | null> | null };
+
+export type PostPartsFragment = { __typename: 'Post', title: string, date: string, tags?: Array<string | null> | null, body?: any | null };
 
 export type DocPartsFragment = { __typename: 'Doc', title: string, description?: string | null, tags?: Array<string | null> | null, body?: any | null };
+
+export type UserQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type UserQuery = { __typename?: 'Query', user: { __typename: 'User', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, users?: Array<{ __typename: 'UserUsers', username: string, name?: string | null, email?: string | null, password: { __typename?: 'UserUsersPassword', value: string, passwordChangeRequired?: boolean | null } } | null> | null } };
+
+export type UserConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<UserFilter>;
+}>;
+
+
+export type UserConnectionQuery = { __typename?: 'Query', userConnection: { __typename?: 'UserConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'UserConnectionEdges', cursor: string, node?: { __typename: 'User', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, users?: Array<{ __typename: 'UserUsers', username: string, name?: string | null, email?: string | null, password: { __typename?: 'UserUsersPassword', value: string, passwordChangeRequired?: boolean | null } } | null> | null } | null } | null> | null } };
 
 export type PostQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', post: { __typename: 'Post', id: string, title: string, date: string, hide_table_of_contents?: boolean | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type PostQuery = { __typename?: 'Query', post: { __typename: 'Post', id: string, title: string, date: string, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type PostConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -390,7 +512,7 @@ export type PostConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename: 'Post', id: string, title: string, date: string, hide_table_of_contents?: boolean | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type PostConnectionQuery = { __typename?: 'Query', postConnection: { __typename?: 'PostConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PostConnectionEdges', cursor: string, node?: { __typename: 'Post', id: string, title: string, date: string, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type DocQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -411,12 +533,26 @@ export type DocConnectionQueryVariables = Exact<{
 
 export type DocConnectionQuery = { __typename?: 'Query', docConnection: { __typename?: 'DocConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'DocConnectionEdges', cursor: string, node?: { __typename: 'Doc', id: string, title: string, description?: string | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
+export const UserPartsFragmentDoc = gql`
+    fragment UserParts on User {
+  __typename
+  users {
+    __typename
+    username
+    name
+    email
+    password {
+      value
+      passwordChangeRequired
+    }
+  }
+}
+    `;
 export const PostPartsFragmentDoc = gql`
     fragment PostParts on Post {
   __typename
   title
   date
-  hide_table_of_contents
   tags
   body
 }
@@ -430,6 +566,63 @@ export const DocPartsFragmentDoc = gql`
   body
 }
     `;
+export const UserDocument = gql`
+    query user($relativePath: String!) {
+  user(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...UserParts
+  }
+}
+    ${UserPartsFragmentDoc}`;
+export const UserConnectionDocument = gql`
+    query userConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: UserFilter) {
+  userConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...UserParts
+      }
+    }
+  }
+}
+    ${UserPartsFragmentDoc}`;
 export const PostDocument = gql`
     query post($relativePath: String!) {
   post(relativePath: $relativePath) {
@@ -547,7 +740,13 @@ export const DocConnectionDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
-      post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}> {
+      user(variables: UserQueryVariables, options?: C): Promise<{data: UserQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: UserQueryVariables, query: string}> {
+        return requester<{data: UserQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: UserQueryVariables, query: string}, UserQueryVariables>(UserDocument, variables, options);
+      },
+    userConnection(variables?: UserConnectionQueryVariables, options?: C): Promise<{data: UserConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: UserConnectionQueryVariables, query: string}> {
+        return requester<{data: UserConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: UserConnectionQueryVariables, query: string}, UserConnectionQueryVariables>(UserConnectionDocument, variables, options);
+      },
+    post(variables: PostQueryVariables, options?: C): Promise<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}> {
         return requester<{data: PostQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostQueryVariables, query: string}, PostQueryVariables>(PostDocument, variables, options);
       },
     postConnection(variables?: PostConnectionQueryVariables, options?: C): Promise<{data: PostConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PostConnectionQueryVariables, query: string}> {
@@ -606,7 +805,7 @@ export const ExperimentalGetTinaClient = () =>
   getSdk(
     generateRequester(
       createClient({
-        url: "http://localhost:4001/graphql",
+        url: "/api/tina/gql",
         queries,
       })
     )

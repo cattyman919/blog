@@ -1,8 +1,21 @@
+fragment UserParts on User {
+  __typename
+  users {
+    __typename
+    username
+    name
+    email
+    password {
+      value
+      passwordChangeRequired
+    }
+  }
+}
+
 fragment PostParts on Post {
   __typename
   title
   date
-  hide_table_of_contents
   tags
   body
 }

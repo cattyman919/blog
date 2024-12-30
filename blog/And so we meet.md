@@ -2,8 +2,8 @@
 title: And so we meet
 date: 2024-11-19
 description: This is my first post on Docusaurus.
-hide_table_of_contents: false
 ---
+
 
 # And so we Meet...
 
@@ -17,7 +17,7 @@ Welcome unknown skibidi person.... welcome to my glorious blog that i don't even
   />
 </center>
 
-{/* truncate */}
+<!-- truncate -->
 
 ## Introduction
 

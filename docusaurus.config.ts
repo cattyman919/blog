@@ -24,7 +24,7 @@ const config: Config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   markdown: {
-    format: "mdx",
+    format: "md",
   },
 
   // Even if you don't use internationalization, you can use this field to set
@@ -81,7 +81,7 @@ const config: Config = {
       title: "DevSen",
       logo: {
         alt: "My Site Logo",
-        src: "img/logo_seno1.svg",
+        src: "img/misc/logo_seno1.svg",
       },
       items: [
         { to: "/blog", label: "Blog", position: "left" },

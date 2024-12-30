@@ -1,0 +1,9 @@
+{
+  "devCommand": "tinacms dev -c \"docusaurus start --port 3000\"",
+  "rewrites": [
+    {
+      "source": "/api/tina/:path*",
+      "destination": "/api/tina/backend"
+    }
+  ]
+}

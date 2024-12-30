@@ -1,5 +1,10 @@
-import { defineConfig } from "tinacms";
+import {
+  UsernamePasswordAuthJSProvider,
+  TinaUserCollection,
+} from "tinacms-authjs/dist/tinacms";
 
+import { defineConfig, LocalAuthProvider } from "tinacms";
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 // Your hosting provider likely exposes this as an environment variable
 const branch =
   process.env.GITHUB_BRANCH ||
@@ -9,9 +14,12 @@ const branch =
 
 export default defineConfig({
   branch,
-
+  authProvider: isLocal
+    ? new LocalAuthProvider()
+    : new UsernamePasswordAuthJSProvider(),
   // Get this from tina.io
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  contentApiUrlOverride: '/api/tina/gql',
   // Get this from tina.io
   token: process.env.TINA_TOKEN,
 
@@ -27,12 +35,19 @@ export default defineConfig({
   },
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
-    collections: [
+    collections: [TinaUserCollection,
       {
         name: "post",
         label: "Posts",
         path: "blog",
-        format: "mdx",
+        format: "md",
+        defaultItem: () => {
+          return {
+            // When a new post is created the title field will be set to "New post"
+            title: 'New Post',
+            date: new Date().toISOString()
+          }
+        },
         fields: [
           {
             type: "string",
@@ -48,11 +63,6 @@ export default defineConfig({
             required: true,
           },
           {
-            type:"boolean",
-            name:"hide_table_of_contents",
-            label: "Hide table of contents?",
-          },
-          {
             type: 'string',
             name: 'tags',
             label: 'Tags',
@@ -63,7 +73,7 @@ export default defineConfig({
             name: "body",
             label: "Body",
             isBody: true,
-          }, 
+          },
         ],
       },
       {

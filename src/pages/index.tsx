@@ -29,7 +29,7 @@ function HomepageHeader() {
         }}
       >
         <img
-          src="img/seno.png"
+          src="img/misc/seno.png"
           style={{ objectFit: "contain", translate: "10% 0" }}
           width={180}
         />
